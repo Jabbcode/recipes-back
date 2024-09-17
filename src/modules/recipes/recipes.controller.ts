@@ -6,6 +6,7 @@ import {
   Patch,
   Param,
   Delete,
+  Query,
 } from '@nestjs/common'
 import { RecipesService } from './recipes.service'
 import { CreateRecipeDto } from './dto/create-recipe.dto'
@@ -22,8 +23,11 @@ export class RecipesController {
   }
 
   @Get()
-  async findAll(): Promise<Recipe[]> {
-    return await this.recipesService.findAll()
+  async findAll(
+    @Query('page') page: number,
+    @Query('limit') limit: number,
+  ): Promise<{ recipes: Recipe[]; pages: number; total: number }> {
+    return await this.recipesService.findAll(page, limit)
   }
 
   @Get(':id')

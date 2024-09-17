@@ -9,8 +9,22 @@ export class UnitRepository {
     @InjectModel(Unit.name) private readonly unitModel: Model<Unit>,
   ) {}
 
-  async findAll(): Promise<Unit[]> {
-    return await this.unitModel.find().exec()
+  async findAll(
+    page: number = 1,
+    limit: number = 10,
+  ): Promise<{ units: Unit[]; pages: number; total: number }> {
+    const skip = (page - 1) * limit
+    const units = await this.unitModel
+      .find()
+      .select(['name', 'description', 'isActive'])
+      .skip(skip)
+      .limit(limit)
+      .exec()
+
+    const count = await this.unitModel.countDocuments().exec()
+    const pages = Math.ceil(count / limit)
+
+    return { units, pages, total: count }
   }
 
   async findIsActive(): Promise<Unit[]> {

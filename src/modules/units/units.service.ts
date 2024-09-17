@@ -2,6 +2,7 @@ import { HttpException, Injectable } from '@nestjs/common'
 import { CreateUnitDto } from './dto/create-unit.dto'
 import { UpdateUnitDto } from './dto/update-unit.dto'
 import { UnitRepository } from './units.repository'
+import { Unit } from './schemas/unit.schema'
 
 @Injectable()
 export class UnitsService {
@@ -9,9 +10,7 @@ export class UnitsService {
 
   async create(createUnitDto: CreateUnitDto) {
     try {
-      const existUnit = await this.unitRepository.findByName(
-        createUnitDto.name,
-      )
+      const existUnit = await this.unitRepository.findByName(createUnitDto.name)
 
       if (existUnit) {
         throw new HttpException(
@@ -39,8 +38,11 @@ export class UnitsService {
     }
   }
 
-  async findAll() {
-    return await this.unitRepository.findAll()
+  async findAll(
+    page: number,
+    limit: number,
+  ): Promise<{ units: Unit[]; pages: number; total: number }> {
+    return await this.unitRepository.findAll(page, limit)
   }
 
   async findIsActive() {

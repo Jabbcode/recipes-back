@@ -6,6 +6,7 @@ import {
   Patch,
   Param,
   Delete,
+  Query,
 } from '@nestjs/common'
 import { UnitsService } from './units.service'
 import { CreateUnitDto } from './dto/create-unit.dto'
@@ -22,8 +23,11 @@ export class UnitsController {
   }
 
   @Get()
-  async findAll(): Promise<Unit[]> {
-    return this.unitsService.findAll()
+  async findAll(
+    @Query('page') page: number,
+    @Query('limit') limit: number,
+  ): Promise<{ units: Unit[]; pages: number; total: number }> {
+    return this.unitsService.findAll(page, limit)
   }
 
   @Get('/is-active')

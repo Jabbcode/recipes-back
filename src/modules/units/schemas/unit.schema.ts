@@ -3,7 +3,15 @@ import { HydratedDocument } from 'mongoose'
 
 export type UnitDocument = HydratedDocument<Unit>
 
-@Schema()
+@Schema({
+  toJSON: {
+    versionKey: false,
+    transform: (doc, ret) => {
+      ret.id = ret._id
+      delete ret._id
+    },
+  },
+})
 export class Unit {
   @Prop({ required: true, unique: true, type: String, maxlength: 15 })
   name: string

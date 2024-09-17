@@ -4,7 +4,15 @@ import { IngredientComplete } from 'src/modules/ingredients/schema/ingredientCom
 
 export type RecipeDocument = HydratedDocument<Recipe>
 
-@Schema()
+@Schema({
+  toJSON: {
+    versionKey: false,
+    transform: (doc, ret) => {
+      ret.id = ret._id
+      delete ret._id
+    },
+  },
+})
 export class Recipe {
   @Prop({ required: true, type: String })
   title: string

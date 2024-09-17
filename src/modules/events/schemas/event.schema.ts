@@ -6,7 +6,15 @@ export type Comidas = 'Desayuno' | 'Almuerzo' | 'Cena'
 
 export type EventDocument = HydratedDocument<Event>
 
-@Schema()
+@Schema({
+  toJSON: {
+    versionKey: false,
+    transform: (doc, ret) => {
+      ret.id = ret._id
+      delete ret._id
+    },
+  },
+})
 export class Event {
   @Prop({ required: true })
   date: Date

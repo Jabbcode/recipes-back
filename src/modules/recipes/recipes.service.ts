@@ -2,6 +2,7 @@ import { HttpException, Injectable } from '@nestjs/common'
 import { CreateRecipeDto } from './dto/create-recipe.dto'
 import { UpdateRecipeDto } from './dto/update-recipe.dto'
 import { RecipeRepository } from './recipes.repository'
+import { Recipe } from './schema/recipe.schema'
 
 @Injectable()
 export class RecipesService {
@@ -25,8 +26,11 @@ export class RecipesService {
     }
   }
 
-  async findAll() {
-    return await this.recipeRepository.findAll()
+  async findAll(
+    page: number,
+    limit: number,
+  ): Promise<{ recipes: Recipe[]; pages: number; total: number }> {
+    return await this.recipeRepository.findAll(page, limit)
   }
 
   async findOne(id: string) {

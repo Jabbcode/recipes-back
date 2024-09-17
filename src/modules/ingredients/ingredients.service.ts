@@ -2,23 +2,19 @@ import { Injectable, HttpException } from '@nestjs/common'
 import { CreateIngredientDto } from './dto/create-ingredient.dto'
 import { UpdateIngredientDto } from './dto/update-ingredient.dto'
 import { Ingredient } from './schema/ingredient.schema'
-import { Model } from 'mongoose'
-import { InjectModel } from '@nestjs/mongoose'
+import { IngredientRepository } from './ingredients.repository'
 
 @Injectable()
 export class IngredientsService {
-  constructor(
-    @InjectModel(Ingredient.name)
-    private readonly IngredientModel: Model<Ingredient>,
-  ) {}
+  constructor(private readonly ingredientRepository: IngredientRepository) {}
 
   async create(createIngredientDto: CreateIngredientDto): Promise<Ingredient> {
     try {
-      const existIngredient = await this.IngredientModel.find({
-        name: createIngredientDto.name,
-      }).exec()
+      const existIngredient = await this.ingredientRepository.findByName(
+        createIngredientDto.name,
+      )
 
-      if (existIngredient.length > 0) {
+      if (existIngredient) {
         throw new HttpException(
           {
             statusCode: 400,
@@ -28,8 +24,7 @@ export class IngredientsService {
         )
       }
 
-      const createdIngredient = new this.IngredientModel(createIngredientDto)
-      return createdIngredient.save()
+      return this.ingredientRepository.create(createIngredientDto)
     } catch (error) {
       if (error instanceof HttpException) {
         throw error
@@ -45,19 +40,20 @@ export class IngredientsService {
     }
   }
 
-  async findAll(): Promise<Ingredient[]> {
-    return await this.IngredientModel.find().exec()
+  async findAll(
+    page: number,
+    limit: number,
+  ): Promise<{ ingredients: Ingredient[]; pages: number, total: number }> {
+    return await this.ingredientRepository.findAll(page, limit)
   }
 
   async findIsActive(): Promise<Ingredient[]> {
-    return await this.IngredientModel.find({
-      isActive: true,
-    }).exec()
+    return await this.ingredientRepository.findIsActive()
   }
 
   async findOne(id: string): Promise<Ingredient> {
     try {
-      const ingredient = await this.IngredientModel.findById(id)
+      const ingredient = await this.ingredientRepository.findOne(id)
 
       if (!ingredient) {
         throw new HttpException(
@@ -87,7 +83,7 @@ export class IngredientsService {
 
   async update(id: string, updateIngredientDto: UpdateIngredientDto) {
     try {
-      const ingredient = await this.IngredientModel.findById(id)
+      const ingredient = await this.ingredientRepository.findOne(id)
 
       if (!ingredient) {
         throw new HttpException(
@@ -98,10 +94,7 @@ export class IngredientsService {
           400,
         )
       }
-      return await this.IngredientModel.findByIdAndUpdate(
-        id,
-        updateIngredientDto,
-      )
+      return await this.ingredientRepository.update(id, updateIngredientDto)
     } catch (error) {
       if (error instanceof HttpException) {
         throw error
@@ -119,7 +112,7 @@ export class IngredientsService {
 
   async remove(id: string) {
     try {
-      const ingredient = await this.IngredientModel.findById(id)
+      const ingredient = await this.ingredientRepository.findOne(id)
 
       if (!ingredient) {
         throw new HttpException(
@@ -131,9 +124,7 @@ export class IngredientsService {
         )
       }
 
-      return await this.IngredientModel.findByIdAndUpdate(id, {
-        isActive: false,
-      })
+      return await this.ingredientRepository.delete(id)
     } catch (error) {
       if (error instanceof HttpException) {
         throw error

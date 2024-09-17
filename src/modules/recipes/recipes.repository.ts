@@ -9,17 +9,28 @@ export class RecipeRepository {
     @InjectModel(Recipe.name) private readonly recipeModel: Model<Recipe>,
   ) {}
 
-  async findAll(): Promise<Recipe[]> {
-    return await this.recipeModel
+  async findAll(
+    page: number = 1,
+    limit: number = 10,
+  ): Promise<{ recipes: Recipe[]; pages: number; total: number }> {
+    const skip = (page - 1) * limit
+    const recipes = await this.recipeModel
       .find()
-      .populate([
-        {
-          path: 'ingredients.unit',
-          select: ['name', 'description'],
-        },
-        { path: 'ingredients.name', select: 'name' },
-      ])
+      .skip(skip)
+      .limit(limit)
+      .populate({
+        path: 'ingredients',
+        populate: [
+          { path: 'name', select: 'name' },
+          { path: 'unit', select: ['name', 'description'] },
+        ],
+      })
       .exec()
+
+    const count = await this.recipeModel.countDocuments().exec()
+    const pages = Math.ceil(count / limit)
+
+    return { recipes, pages, total: count }
   }
 
   async findIsActive(): Promise<Recipe[]> {
@@ -31,7 +42,16 @@ export class RecipeRepository {
   }
 
   async findOne(id: string): Promise<Recipe> {
-    return this.recipeModel.findById(id).exec()
+    return this.recipeModel
+      .findById(id)
+      .populate([
+        {
+          path: 'ingredients.unit',
+          select: ['name', 'description'],
+        },
+        { path: 'ingredients.name', select: 'name' },
+      ])
+      .exec()
   }
 
   async create(recipe: Recipe): Promise<Recipe> {

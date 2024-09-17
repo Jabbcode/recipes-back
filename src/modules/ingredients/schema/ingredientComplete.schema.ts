@@ -1,13 +1,22 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose'
-import mongoose, { HydratedDocument, ObjectId } from 'mongoose'
+import mongoose, { HydratedDocument } from 'mongoose'
 import { Unit } from 'src/modules/units/schemas/unit.schema'
+import { Ingredient } from './ingredient.schema'
 
 export type IngredientCompleteDocument = HydratedDocument<IngredientComplete>
 
-@Schema()
+@Schema({
+  toJSON: {
+    versionKey: false,
+    transform: (doc, ret) => {
+      ret.id = ret._id
+      delete ret._id
+    },
+  },
+})
 export class IngredientComplete {
   @Prop({ type: mongoose.Schema.Types.ObjectId, ref: 'Ingredient' })
-  name: ObjectId
+  name: Ingredient
 
   @Prop()
   quantity: number

@@ -6,6 +6,7 @@ import {
   Patch,
   Param,
   Delete,
+  Query,
 } from '@nestjs/common'
 import { IngredientsService } from './ingredients.service'
 import { CreateIngredientDto } from './dto/create-ingredient.dto'
@@ -24,8 +25,11 @@ export class IngredientsController {
   }
 
   @Get()
-  async findAll(): Promise<Ingredient[]> {
-    return await this.ingredientsService.findAll()
+  async findAll(
+    @Query('page') page: number,
+    @Query('limit') limit: number,
+  ): Promise<{ ingredients: Ingredient[]; pages: number, total: number }> {
+    return await this.ingredientsService.findAll(page, limit)
   }
 
   @Get('/is-active')
