@@ -37,6 +37,10 @@ export class EventRepository {
       query.where('type', filter.type)
     }
 
+    if (filter.startDate && filter.endDate) {
+      query.where('date', { $gte: filter.startDate, $lte: filter.endDate })
+    }
+
     return query
       .populate([{ path: 'date' }, { path: 'type' }, { path: 'recipe' }])
       .exec()

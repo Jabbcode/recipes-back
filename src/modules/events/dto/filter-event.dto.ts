@@ -8,4 +8,10 @@ export class FilterEventDto {
   @IsOptional()
   @IsEnum(FoodTypes)
   type: typeof FoodTypes
+
+  @IsOptional()
+  startDate: Date  
+
+  @IsOptional()
+  endDate: Date
 }
