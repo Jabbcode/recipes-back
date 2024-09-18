@@ -19,11 +19,15 @@ export class IngredientRepository {
     const ingredients = await this.ingredientModel
       .find()
       .select('name isActive')
+      .where('isActive', true)
       .skip(skip)
       .limit(limit)
       .exec()
 
-    const count = await this.ingredientModel.countDocuments().exec()
+    const count = await this.ingredientModel
+      .countDocuments()
+      .where('isActive', true)
+      .exec()
     const pages = Math.ceil(count / limit)
 
     return { ingredients, pages, total: count }
