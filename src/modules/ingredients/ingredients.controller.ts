@@ -14,6 +14,7 @@ import { CreateIngredientDto } from './dto/create-ingredient.dto'
 import { UpdateIngredientDto } from './dto/update-ingredient.dto'
 import { Ingredient } from './schema/ingredient.schema'
 import { FilterIngredientDto } from './dto/filter-ingredient.dto'
+import { MongoValidIdPipe } from 'src/pipes/mongo-valid-id.pipe'
 
 @Controller('ingredients')
 export class IngredientsController {
@@ -36,27 +37,27 @@ export class IngredientsController {
 
   @Post('/search')
   @HttpCode(200)
-  async findByFilter(
-    @Body() filters: FilterIngredientDto,
-  ) {
+  async findByFilter(@Body() filters: FilterIngredientDto) {
     return await this.ingredientsService.findByFilter(filters)
   }
 
   @Get(':id')
-  async findOne(@Param('id') id: string): Promise<Ingredient> {
+  async findOne(
+    @Param('id', MongoValidIdPipe) id: string,
+  ): Promise<Ingredient> {
     return await this.ingredientsService.findOne(id)
   }
 
   @Patch(':id')
   async update(
-    @Param('id') id: string,
+    @Param('id', MongoValidIdPipe) id: string,
     @Body() updateIngredientDto: UpdateIngredientDto,
   ): Promise<Ingredient> {
     return await this.ingredientsService.update(id, updateIngredientDto)
   }
 
   @Delete(':id')
-  async remove(@Param('id') id: string) {
+  async remove(@Param('id', MongoValidIdPipe) id: string) {
     return await this.ingredientsService.remove(id)
   }
 }

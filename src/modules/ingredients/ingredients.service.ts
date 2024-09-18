@@ -69,6 +69,7 @@ export class IngredientsService {
       return ingredient
     } catch (error) {
       if (error instanceof HttpException) {
+        
         throw error
       } else {
         throw new HttpException(

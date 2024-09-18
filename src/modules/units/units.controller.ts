@@ -13,6 +13,7 @@ import { CreateUnitDto } from './dto/create-unit.dto'
 import { UpdateUnitDto } from './dto/update-unit.dto'
 import { Unit } from './schemas/unit.schema'
 import { FilterUnitDto } from './dto/filter-unit.dto'
+import { MongoValidIdPipe } from 'src/pipes/mongo-valid-id.pipe'
 
 @Controller('units')
 export class UnitsController {
@@ -37,20 +38,20 @@ export class UnitsController {
   }
 
   @Get(':id')
-  async findOne(@Param('id') id: string): Promise<Unit> {
+  async findOne(@Param('id', MongoValidIdPipe) id: string): Promise<Unit> {
     return this.unitsService.findOne(id)
   }
 
   @Patch(':id')
   async update(
-    @Param('id') id: string,
+    @Param('id', MongoValidIdPipe) id: string,
     @Body() updateUnitDto: UpdateUnitDto,
   ): Promise<Unit> {
     return this.unitsService.update(id, updateUnitDto)
   }
 
   @Delete(':id')
-  async remove(@Param('id') id: string) {
+  async remove(@Param('id', MongoValidIdPipe) id: string) {
     return this.unitsService.remove(id)
   }
 }

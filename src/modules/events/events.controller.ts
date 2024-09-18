@@ -13,6 +13,7 @@ import { CreateEventDto } from './dto/create-event.dto'
 import { UpdateEventDto } from './dto/update-event.dto'
 import { Event } from './schemas/event.schema'
 import { FilterEventDto } from './dto/filter-event.dto'
+import { MongoValidIdPipe } from 'src/pipes/mongo-valid-id.pipe'
 
 @Controller('events')
 export class EventsController {
@@ -35,20 +36,20 @@ export class EventsController {
   }
 
   @Get(':id')
-  async findOne(@Param('id') id: string): Promise<Event> {
+  async findOne(@Param('id', MongoValidIdPipe) id: string): Promise<Event> {
     return await this.eventsService.findOne(id)
   }
 
   @Patch(':id')
   async update(
-    @Param('id') id: string,
+    @Param('id', MongoValidIdPipe) id: string,
     @Body() updateEventDto: UpdateEventDto,
   ): Promise<Event> {
     return await this.eventsService.update(id, updateEventDto)
   }
 
   @Delete(':id')
-  async remove(@Param('id') id: string) {
+  async remove(@Param('id', MongoValidIdPipe) id: string) {
     return await this.eventsService.remove(id)
   }
 }
