@@ -3,6 +3,7 @@ import { CreateIngredientDto } from './dto/create-ingredient.dto'
 import { UpdateIngredientDto } from './dto/update-ingredient.dto'
 import { Ingredient } from './schema/ingredient.schema'
 import { IngredientRepository } from './ingredients.repository'
+import { FilterIngredientDto } from './dto/filter-ingredient.dto'
 
 @Injectable()
 export class IngredientsService {
@@ -40,15 +41,15 @@ export class IngredientsService {
     }
   }
 
+  async findByFilter(filter: FilterIngredientDto) {
+    return await this.ingredientRepository.findByFilter(filter)
+  }
+
   async findAll(
     page: number,
     limit: number,
-  ): Promise<{ ingredients: Ingredient[]; pages: number, total: number }> {
+  ): Promise<{ ingredients: Ingredient[]; pages: number; total: number }> {
     return await this.ingredientRepository.findAll(page, limit)
-  }
-
-  async findIsActive(): Promise<Ingredient[]> {
-    return await this.ingredientRepository.findIsActive()
   }
 
   async findOne(id: string): Promise<Ingredient> {

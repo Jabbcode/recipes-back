@@ -7,11 +7,13 @@ import {
   Param,
   Delete,
   Query,
+  HttpCode,
 } from '@nestjs/common'
 import { IngredientsService } from './ingredients.service'
 import { CreateIngredientDto } from './dto/create-ingredient.dto'
 import { UpdateIngredientDto } from './dto/update-ingredient.dto'
 import { Ingredient } from './schema/ingredient.schema'
+import { FilterIngredientDto } from './dto/filter-ingredient.dto'
 
 @Controller('ingredients')
 export class IngredientsController {
@@ -28,13 +30,16 @@ export class IngredientsController {
   async findAll(
     @Query('page') page: number,
     @Query('limit') limit: number,
-  ): Promise<{ ingredients: Ingredient[]; pages: number, total: number }> {
+  ): Promise<{ ingredients: Ingredient[]; pages: number; total: number }> {
     return await this.ingredientsService.findAll(page, limit)
   }
 
-  @Get('/is-active')
-  async findIsActive(): Promise<Ingredient[]> {
-    return await this.ingredientsService.findIsActive()
+  @Post('/search')
+  @HttpCode(200)
+  async findByFilter(
+    @Body() filters: FilterIngredientDto,
+  ) {
+    return await this.ingredientsService.findByFilter(filters)
   }
 
   @Get(':id')

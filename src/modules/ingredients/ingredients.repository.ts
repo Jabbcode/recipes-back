@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common'
 import { Model } from 'mongoose'
 import { InjectModel } from '@nestjs/mongoose'
 import { Ingredient } from './schema/ingredient.schema'
+import { FilterIngredientDto } from './dto/filter-ingredient.dto'
 
 @Injectable()
 export class IngredientRepository {
@@ -28,8 +29,18 @@ export class IngredientRepository {
     return { ingredients, pages, total: count }
   }
 
-  async findIsActive(): Promise<Ingredient[]> {
-    return await this.ingredientModel.find({ isActive: true }).exec()
+  async findByFilter(filter: FilterIngredientDto): Promise<Ingredient[]> {
+    const query = this.ingredientModel.find()
+
+    if (filter.name) {
+      query.where('name', { $regex: filter.name, $options: 'i' })
+    }
+
+    if (filter.isActive !== undefined) {
+      query.where('isActive', filter.isActive)
+    }
+
+    return query.exec()
   }
 
   async findByName(name: string): Promise<Ingredient | null> {
