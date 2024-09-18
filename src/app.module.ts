@@ -4,10 +4,12 @@ import { MongooseModule } from '@nestjs/mongoose'
 import { UnitsModule } from './modules/units/units.module'
 import { RecipesModule } from './modules/recipes/recipes.module'
 import { EventsModule } from './modules/events/events.module'
+import { ConfigModule } from '@nestjs/config'
 
 @Module({
   imports: [
-    MongooseModule.forRoot('mongodb://127.0.0.1:27017/recipesDB'),
+    ConfigModule.forRoot(),
+    MongooseModule.forRoot(process.env.MONGO_DB_CONNECTION),
     IngredientsModule,
     UnitsModule,
     RecipesModule,
