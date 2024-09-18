@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common'
 import { Model } from 'mongoose'
 import { InjectModel } from '@nestjs/mongoose'
 import { Recipe } from './schema/recipe.schema'
+import { FilterRecipeDto } from './dto/filter-recipe.dto'
 
 @Injectable()
 export class RecipeRepository {
@@ -33,8 +34,26 @@ export class RecipeRepository {
     return { recipes, pages, total: count }
   }
 
-  async findIsActive(): Promise<Recipe[]> {
-    return await this.recipeModel.find({ isActive: true }).exec()
+  async findByFilter(filter: FilterRecipeDto): Promise<Recipe[]> {
+    const query = this.recipeModel.find()
+
+    if (filter.title) {
+      query.where('title', { $regex: filter.title, $options: 'i' })
+    }
+
+    if (filter.description) {
+      query.where('description', { $regex: filter.description, $options: 'i' })
+    }
+
+    return query
+      .populate({
+        path: 'ingredients',
+        populate: [
+          { path: 'name', select: 'name' },
+          { path: 'unit', select: ['name', 'description'] },
+        ],
+      })
+      .exec()
   }
 
   async findByName(name: string): Promise<Recipe | null> {
@@ -63,12 +82,6 @@ export class RecipeRepository {
   }
 
   async delete(id: string): Promise<void> {
-    return await this.recipeModel.findByIdAndUpdate(
-      id,
-      {
-        isActive: false,
-      },
-      { new: true },
-    )
+    await this.recipeModel.deleteOne({ _id: id })
   }
 }

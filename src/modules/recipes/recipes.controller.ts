@@ -12,6 +12,7 @@ import { RecipesService } from './recipes.service'
 import { CreateRecipeDto } from './dto/create-recipe.dto'
 import { UpdateRecipeDto } from './dto/update-recipe.dto'
 import { Recipe } from './schema/recipe.schema'
+import { FilterRecipeDto } from './dto/filter-recipe.dto'
 
 @Controller('recipes')
 export class RecipesController {
@@ -28,6 +29,11 @@ export class RecipesController {
     @Query('limit') limit: number,
   ): Promise<{ recipes: Recipe[]; pages: number; total: number }> {
     return await this.recipesService.findAll(page, limit)
+  }
+
+  @Post('/search')
+  async findByFilter(@Body() filter: FilterRecipeDto): Promise<Recipe[]> {
+    return await this.recipesService.findByFilter(filter)
   }
 
   @Get(':id')

@@ -3,6 +3,7 @@ import { CreateRecipeDto } from './dto/create-recipe.dto'
 import { UpdateRecipeDto } from './dto/update-recipe.dto'
 import { RecipeRepository } from './recipes.repository'
 import { Recipe } from './schema/recipe.schema'
+import { FilterRecipeDto } from './dto/filter-recipe.dto'
 
 @Injectable()
 export class RecipesService {
@@ -31,6 +32,10 @@ export class RecipesService {
     limit: number,
   ): Promise<{ recipes: Recipe[]; pages: number; total: number }> {
     return await this.recipeRepository.findAll(page, limit)
+  }
+
+  async findByFilter(filter: FilterRecipeDto) {
+    return await this.recipeRepository.findByFilter(filter)
   }
 
   async findOne(id: string) {
