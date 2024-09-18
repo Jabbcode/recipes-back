@@ -55,10 +55,6 @@ export class EventRepository {
   }
 
   async deleteEvent(id: string) {
-    await this.eventModel.deleteOne({
-      where: {
-        id,
-      },
-    })
+    await this.eventModel.deleteOne({ _id: id })
   }
 }
