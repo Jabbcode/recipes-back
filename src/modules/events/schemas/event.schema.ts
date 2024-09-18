@@ -1,8 +1,7 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose'
 import mongoose, { HydratedDocument } from 'mongoose'
 import { Recipe } from 'src/modules/recipes/schema/recipe.schema'
-
-export type Comidas = 'Desayuno' | 'Almuerzo' | 'Cena'
+import { ComidasTypes } from 'src/types'
 
 export type EventDocument = HydratedDocument<Event>
 
@@ -20,7 +19,7 @@ export class Event {
   date: Date
 
   @Prop({ type: String })
-  type: Comidas
+  type: typeof ComidasTypes
 
   @Prop({ type: mongoose.Schema.Types.ObjectId, ref: 'Recipe' })
   recipe: Recipe

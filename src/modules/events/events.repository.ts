@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common'
 import { Model } from 'mongoose'
 import { InjectModel } from '@nestjs/mongoose'
 import { Event } from './schemas/event.schema'
+import { FilterEventDto } from './dto/filter-event.dto'
 
 @Injectable()
 export class EventRepository {
@@ -18,6 +19,27 @@ export class EventRepository {
 
   async findByName(name: string): Promise<Event | null> {
     return await this.eventModel.findOne({ name }).exec()
+  }
+
+  async findByFilter(filter: FilterEventDto): Promise<Event[]> {
+    const query = this.eventModel.find()
+
+    if (filter.date) {
+      const month = new Date(filter.date).getMonth() + 1
+      query.where({
+        $expr: {
+          $eq: [{ $month: '$date' }, month],
+        },
+      })
+    }
+
+    if (filter.type) {
+      query.where('type', filter.type)
+    }
+
+    return query
+      .populate([{ path: 'date' }, { path: 'type' }, { path: 'recipe' }])
+      .exec()
   }
 
   async findOne(id: string): Promise<Event> {

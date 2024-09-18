@@ -6,11 +6,13 @@ import {
   Patch,
   Param,
   Delete,
+  HttpCode,
 } from '@nestjs/common'
 import { EventsService } from './events.service'
 import { CreateEventDto } from './dto/create-event.dto'
 import { UpdateEventDto } from './dto/update-event.dto'
 import { Event } from './schemas/event.schema'
+import { FilterEventDto } from './dto/filter-event.dto'
 
 @Controller('events')
 export class EventsController {
@@ -24,6 +26,12 @@ export class EventsController {
   @Get()
   async findAll(): Promise<Event[]> {
     return await this.eventsService.findAll()
+  }
+
+  @Post('/search')
+  @HttpCode(200)
+  async findByFilter(@Body() filter: FilterEventDto): Promise<Event[]> {
+    return await this.eventsService.findByFilter(filter)
   }
 
   @Get(':id')

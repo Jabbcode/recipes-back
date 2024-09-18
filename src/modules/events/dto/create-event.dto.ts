@@ -1,13 +1,13 @@
 import { Recipe } from 'src/modules/recipes/schema/recipe.schema'
-import { Comidas } from '../schemas/event.schema'
 import { IsNotEmpty, IsString } from 'class-validator'
+import { ComidasTypes } from 'src/types'
 
 export class CreateEventDto {
   @IsNotEmpty()
   date: Date
 
   @IsString()
-  type: Comidas
+  type: typeof ComidasTypes
 
   @IsNotEmpty()
   recipe: Recipe

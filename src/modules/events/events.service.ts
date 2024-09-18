@@ -2,13 +2,13 @@ import { HttpException, Injectable } from '@nestjs/common'
 import { CreateEventDto } from './dto/create-event.dto'
 import { UpdateEventDto } from './dto/update-event.dto'
 import { EventRepository } from './events.repository'
+import { FilterEventDto } from './dto/filter-event.dto'
 
 @Injectable()
 export class EventsService {
   constructor(private readonly eventRepository: EventRepository) {}
 
   async create(createEventDto: CreateEventDto) {
-    console.log(createEventDto)
     try {
       return await this.eventRepository.create(createEventDto)
     } catch (error) {
@@ -28,6 +28,10 @@ export class EventsService {
 
   async findAll() {
     return await this.eventRepository.findAll()
+  }
+
+  async findByFilter(filter: FilterEventDto) {
+    return await this.eventRepository.findByFilter(filter)
   }
 
   async findOne(id: string) {
