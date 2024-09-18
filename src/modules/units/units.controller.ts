@@ -12,6 +12,7 @@ import { UnitsService } from './units.service'
 import { CreateUnitDto } from './dto/create-unit.dto'
 import { UpdateUnitDto } from './dto/update-unit.dto'
 import { Unit } from './schemas/unit.schema'
+import { FilterUnitDto } from './dto/filter-unit.dto'
 
 @Controller('units')
 export class UnitsController {
@@ -30,9 +31,9 @@ export class UnitsController {
     return this.unitsService.findAll(page, limit)
   }
 
-  @Get('/is-active')
-  async findIsActive(): Promise<Unit[]> {
-    return await this.unitsService.findIsActive()
+  @Post('/search')
+  async findByFilter(@Body() filter: FilterUnitDto): Promise<Unit[]> {
+    return await this.unitsService.findByFilter(filter)
   }
 
   @Get(':id')

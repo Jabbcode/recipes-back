@@ -3,6 +3,7 @@ import { CreateUnitDto } from './dto/create-unit.dto'
 import { UpdateUnitDto } from './dto/update-unit.dto'
 import { UnitRepository } from './units.repository'
 import { Unit } from './schemas/unit.schema'
+import { FilterUnitDto } from './dto/filter-unit.dto'
 
 @Injectable()
 export class UnitsService {
@@ -45,8 +46,8 @@ export class UnitsService {
     return await this.unitRepository.findAll(page, limit)
   }
 
-  async findIsActive() {
-    return await this.unitRepository.findIsActive()
+  async findByFilter(filter: FilterUnitDto) {
+    return await this.unitRepository.findByFilter(filter)
   }
 
   async findOne(id: string) {

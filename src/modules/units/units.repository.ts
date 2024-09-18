@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common'
 import { Model } from 'mongoose'
 import { InjectModel } from '@nestjs/mongoose'
 import { Unit } from './schemas/unit.schema'
+import { FilterUnitDto } from './dto/filter-unit.dto'
 
 @Injectable()
 export class UnitRepository {
@@ -27,8 +28,22 @@ export class UnitRepository {
     return { units, pages, total: count }
   }
 
-  async findIsActive(): Promise<Unit[]> {
-    return await this.unitModel.find({ isActive: true }).exec()
+  async findByFilter(filter: FilterUnitDto): Promise<Unit[]> {
+    const query = this.unitModel.find()
+
+    if (filter.name) {
+      query.where('name', { $regex: filter.name, $options: 'i' })
+    }
+
+    if (filter.description) {
+      query.where('description', { $regex: filter.description, $options: 'i' })
+    }
+
+    if (filter.isActive !== undefined) {
+      query.where('isActive', filter.isActive)
+    }
+
+    return query.exec()
   }
 
   async findByName(name: string): Promise<Unit | null> {
