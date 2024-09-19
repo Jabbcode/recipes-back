@@ -19,15 +19,11 @@ export class IngredientRepository {
     const ingredients = await this.ingredientModel
       .find()
       .select('name isActive')
-      .where('isActive', true)
       .skip(skip)
       .limit(limit)
       .exec()
 
-    const count = await this.ingredientModel
-      .countDocuments()
-      .where('isActive', true)
-      .exec()
+    const count = await this.ingredientModel.countDocuments().exec()
     const pages = Math.ceil(count / limit)
 
     return { ingredients, pages, total: count }
@@ -65,13 +61,7 @@ export class IngredientRepository {
       .exec()
   }
 
-  async delete(id: string): Promise<void> {
-    return await this.ingredientModel.findByIdAndUpdate(
-      id,
-      {
-        isActive: false,
-      },
-      { new: true },
-    )
+  async delete(id: string): Promise<Ingredient> {
+    return await this.ingredientModel.findOneAndDelete({ _id: id })
   }
 }

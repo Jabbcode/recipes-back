@@ -9,7 +9,9 @@ import { FilterIngredientDto } from './dto/filter-ingredient.dto'
 export class IngredientsService {
   constructor(private readonly ingredientRepository: IngredientRepository) {}
 
-  async create(createIngredientDto: CreateIngredientDto): Promise<Ingredient> {
+  async create(
+    createIngredientDto: CreateIngredientDto,
+  ): Promise<{ ingredient: Ingredient; message: string }> {
     try {
       const existIngredient = await this.ingredientRepository.findByName(
         createIngredientDto.name,
@@ -19,13 +21,16 @@ export class IngredientsService {
         throw new HttpException(
           {
             statusCode: 400,
-            message: 'Existe un ingrediente con ese nombre',
+            message: 'Ya existe un ingrediente con ese nombre',
           },
           400,
         )
       }
 
-      return this.ingredientRepository.create(createIngredientDto)
+      return {
+        ingredient: await this.ingredientRepository.create(createIngredientDto),
+        message: 'El ingrediente se agrego correctamente',
+      }
     } catch (error) {
       if (error instanceof HttpException) {
         throw error
@@ -69,7 +74,6 @@ export class IngredientsService {
       return ingredient
     } catch (error) {
       if (error instanceof HttpException) {
-        
         throw error
       } else {
         throw new HttpException(
@@ -112,7 +116,9 @@ export class IngredientsService {
     }
   }
 
-  async remove(id: string) {
+  async remove(
+    id: string,
+  ): Promise<{ ingredient: Ingredient; message: string }> {
     try {
       const ingredient = await this.ingredientRepository.findOne(id)
 
@@ -126,7 +132,10 @@ export class IngredientsService {
         )
       }
 
-      return await this.ingredientRepository.delete(id)
+      return {
+        ingredient: await this.ingredientRepository.delete(id),
+        message: 'El ingrediente se elimino correctamente',
+      }
     } catch (error) {
       if (error instanceof HttpException) {
         throw error

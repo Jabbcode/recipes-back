@@ -16,6 +16,11 @@ import { Ingredient } from './schema/ingredient.schema'
 import { FilterIngredientDto } from './dto/filter-ingredient.dto'
 import { MongoValidIdPipe } from 'src/pipes/mongo-valid-id.pipe'
 
+interface ResponseIngredient {
+  ingredient: Ingredient
+  message: string
+}
+
 @Controller('ingredients')
 export class IngredientsController {
   constructor(private readonly ingredientsService: IngredientsService) {}
@@ -23,7 +28,7 @@ export class IngredientsController {
   @Post()
   async create(
     @Body() createIngredientDto: CreateIngredientDto,
-  ): Promise<Ingredient> {
+  ): Promise<ResponseIngredient> {
     return await this.ingredientsService.create(createIngredientDto)
   }
 
@@ -57,7 +62,9 @@ export class IngredientsController {
   }
 
   @Delete(':id')
-  async remove(@Param('id', MongoValidIdPipe) id: string) {
+  async remove(
+    @Param('id', MongoValidIdPipe) id: string,
+  ): Promise<ResponseIngredient> {
     return await this.ingredientsService.remove(id)
   }
 }
