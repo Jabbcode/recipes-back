@@ -15,12 +15,17 @@ import { Unit } from './schemas/unit.schema'
 import { FilterUnitDto } from './dto/filter-unit.dto'
 import { MongoValidIdPipe } from 'src/pipes/mongo-valid-id.pipe'
 
+interface ResponseUnit {
+  unit: Unit
+  message: string
+}
+
 @Controller('units')
 export class UnitsController {
   constructor(private readonly unitsService: UnitsService) {}
 
   @Post()
-  async create(@Body() createUnitDto: CreateUnitDto): Promise<Unit> {
+  async create(@Body() createUnitDto: CreateUnitDto): Promise<ResponseUnit> {
     return this.unitsService.create(createUnitDto)
   }
 
@@ -46,12 +51,14 @@ export class UnitsController {
   async update(
     @Param('id', MongoValidIdPipe) id: string,
     @Body() updateUnitDto: UpdateUnitDto,
-  ): Promise<Unit> {
+  ): Promise<ResponseUnit> {
     return this.unitsService.update(id, updateUnitDto)
   }
 
   @Delete(':id')
-  async remove(@Param('id', MongoValidIdPipe) id: string) {
+  async remove(
+    @Param('id', MongoValidIdPipe) id: string,
+  ): Promise<ResponseUnit> {
     return this.unitsService.remove(id)
   }
 }

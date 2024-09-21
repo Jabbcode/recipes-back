@@ -62,13 +62,7 @@ export class UnitRepository {
     return this.unitModel.findByIdAndUpdate(id, unit, { new: true }).exec()
   }
 
-  async delete(id: string): Promise<void> {
-    return await this.unitModel.findByIdAndUpdate(
-      id,
-      {
-        isActive: false,
-      },
-      { new: true },
-    )
+  async delete(id: string): Promise<Unit> {
+    return await this.unitModel.findOneAndDelete({ _id: id })
   }
 }

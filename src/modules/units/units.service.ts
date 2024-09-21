@@ -9,7 +9,9 @@ import { FilterUnitDto } from './dto/filter-unit.dto'
 export class UnitsService {
   constructor(private readonly unitRepository: UnitRepository) {}
 
-  async create(createUnitDto: CreateUnitDto) {
+  async create(
+    createUnitDto: CreateUnitDto,
+  ): Promise<{ unit: Unit; message: string }> {
     try {
       const existUnit = await this.unitRepository.findByName(createUnitDto.name)
 
@@ -23,7 +25,10 @@ export class UnitsService {
         )
       }
 
-      return this.unitRepository.create(createUnitDto)
+      return {
+        unit: await this.unitRepository.create(createUnitDto),
+        message: 'La unidad se agrego correctamente',
+      }
     } catch (error) {
       if (error instanceof HttpException) {
         throw error
@@ -80,7 +85,10 @@ export class UnitsService {
     }
   }
 
-  async update(id: string, updateUnitDto: UpdateUnitDto) {
+  async update(
+    id: string,
+    updateUnitDto: UpdateUnitDto,
+  ): Promise<{ unit: Unit; message: string }> {
     try {
       const unit = await this.unitRepository.findOne(id)
 
@@ -93,7 +101,10 @@ export class UnitsService {
           400,
         )
       }
-      return await this.unitRepository.update(id, updateUnitDto)
+      return {
+        unit: await this.unitRepository.update(id, updateUnitDto),
+        message: 'Unidad actualizada correctamente',
+      }
     } catch (error) {
       if (error instanceof HttpException) {
         throw error
@@ -109,7 +120,7 @@ export class UnitsService {
     }
   }
 
-  async remove(id: string) {
+  async remove(id: string): Promise<{ unit: Unit; message: string }> {
     try {
       const unit = await this.unitRepository.findOne(id)
 
@@ -123,7 +134,10 @@ export class UnitsService {
         )
       }
 
-      return await this.unitRepository.delete(id)
+      return {
+        unit: await this.unitRepository.delete(id),
+        message: 'La unidad se borro correctamente',
+      }
     } catch (error) {
       if (error instanceof HttpException) {
         throw error
