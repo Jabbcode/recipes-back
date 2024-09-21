@@ -57,7 +57,7 @@ export class IngredientsController {
   async update(
     @Param('id', MongoValidIdPipe) id: string,
     @Body() updateIngredientDto: UpdateIngredientDto,
-  ): Promise<Ingredient> {
+  ): Promise<ResponseIngredient> {
     return await this.ingredientsService.update(id, updateIngredientDto)
   }
 

@@ -87,7 +87,10 @@ export class IngredientsService {
     }
   }
 
-  async update(id: string, updateIngredientDto: UpdateIngredientDto) {
+  async update(
+    id: string,
+    updateIngredientDto: UpdateIngredientDto,
+  ): Promise<{ ingredient: Ingredient; message: string }> {
     try {
       const ingredient = await this.ingredientRepository.findOne(id)
 
@@ -100,7 +103,13 @@ export class IngredientsService {
           400,
         )
       }
-      return await this.ingredientRepository.update(id, updateIngredientDto)
+      return {
+        ingredient: await this.ingredientRepository.update(
+          id,
+          updateIngredientDto,
+        ),
+        message: 'Ingrediente actualizado correctamente',
+      }
     } catch (error) {
       if (error instanceof HttpException) {
         throw error
