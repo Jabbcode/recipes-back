@@ -11,20 +11,21 @@ export class IngredientsService {
 
   async create(
     createIngredientDto: CreateIngredientDto,
-  ): Promise<{ ingredient: Ingredient; message: string }> {
+  ): Promise<{
+    ingredient?: Ingredient
+    message: string
+    statusCode?: number
+  }> {
     try {
       const existIngredient = await this.ingredientRepository.findByName(
         createIngredientDto.name,
       )
 
       if (existIngredient) {
-        throw new HttpException(
-          {
-            statusCode: 400,
-            message: 'Ya existe un ingrediente con ese nombre',
-          },
-          400,
-        )
+        return {
+          statusCode: 400,
+          message: 'Ya existe un ingrediente con ese nombre',
+        }
       }
 
       return {

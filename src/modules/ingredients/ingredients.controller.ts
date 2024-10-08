@@ -17,8 +17,9 @@ import { FilterIngredientDto } from './dto/filter-ingredient.dto'
 import { MongoValidIdPipe } from 'src/pipes/mongo-valid-id.pipe'
 
 interface ResponseIngredient {
-  ingredient: Ingredient
+  ingredient?: Ingredient
   message: string
+  statusCode?: number
 }
 
 @Controller('ingredients')
