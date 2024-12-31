@@ -1,9 +1,9 @@
 import { HttpException, Injectable } from '@nestjs/common'
-import { CreateRecipeDto } from './dto/create-recipe.dto'
-import { UpdateRecipeDto } from './dto/update-recipe.dto'
+
 import { RecipeRepository } from './recipes.repository'
-import { Recipe } from './schema/recipe.schema'
-import { FilterRecipeDto } from './dto/filter-recipe.dto'
+
+import { CreateRecipeDto, UpdateRecipeDto, FilterRecipeDto } from './dto'
+import { Recipe } from './schema'
 
 @Injectable()
 export class RecipesService {
@@ -49,10 +49,10 @@ export class RecipesService {
       if (!recipe) {
         throw new HttpException(
           {
-            statusCode: 400,
+            statusCode: 404,
             message: `No existe receta con el id ${id}`,
           },
-          400,
+          404,
         )
       }
 
@@ -79,10 +79,10 @@ export class RecipesService {
       if (!recipe) {
         throw new HttpException(
           {
-            statusCode: 400,
+            statusCode: 404,
             message: `No existe receta con el id ${id}`,
           },
-          400,
+          404,
         )
       }
 
@@ -109,10 +109,10 @@ export class RecipesService {
       if (!recipe) {
         throw new HttpException(
           {
-            statusCode: 400,
+            statusCode: 404,
             message: `No existe receta con el id ${id}`,
           },
-          400,
+          404,
         )
       }
 

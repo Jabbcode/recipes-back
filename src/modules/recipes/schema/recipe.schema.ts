@@ -1,6 +1,7 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose'
 import { HydratedDocument } from 'mongoose'
-import { IngredientComplete } from 'src/modules/ingredients/schema/ingredientComplete.schema'
+
+import { IngredientComplete } from '@/modules/ingredients/schema/ingredientComplete.schema'
 
 export type RecipeDocument = HydratedDocument<Recipe>
 

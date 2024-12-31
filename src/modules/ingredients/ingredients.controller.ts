@@ -2,7 +2,7 @@ import { Controller, Get, Post, Body, Patch, Param, Delete, Query, HttpCode } fr
 import { ApiOperation, ApiTags } from '@nestjs/swagger'
 
 import { CreateIngredientDto, FilterIngredientDto, UpdateIngredientDto } from './dto'
-import { Ingredient } from './schema/ingredient.schema'
+import { Ingredient } from './schema'
 
 import { IngredientsService } from './ingredients.service'
 

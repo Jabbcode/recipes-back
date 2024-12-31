@@ -1,14 +1,13 @@
 import { Injectable } from '@nestjs/common'
-import { Model } from 'mongoose'
 import { InjectModel } from '@nestjs/mongoose'
-import { Recipe } from './schema/recipe.schema'
-import { FilterRecipeDto } from './dto/filter-recipe.dto'
+import { Model } from 'mongoose'
+
+import { Recipe } from './schema'
+import { FilterRecipeDto } from './dto'
 
 @Injectable()
 export class RecipeRepository {
-  constructor(
-    @InjectModel(Recipe.name) private readonly recipeModel: Model<Recipe>,
-  ) {}
+  constructor(@InjectModel(Recipe.name) private readonly recipeModel: Model<Recipe>) {}
 
   async findAll(
     page: number = 1,

@@ -1,11 +1,25 @@
-import { PartialType } from '@nestjs/mapped-types';
-import { CreateRecipeDto } from './create-recipe.dto';
-import { IngredientComplete } from 'src/modules/ingredients/schema/ingredientComplete.schema';
+import { PartialType } from '@nestjs/mapped-types'
+import { ApiProperty } from '@nestjs/swagger'
+
+import { IngredientComplete } from '@/modules/ingredients/schema/ingredientComplete.schema'
+import { CreateRecipeDto } from './create-recipe.dto'
 
 export class UpdateRecipeDto extends PartialType(CreateRecipeDto) {
+  @ApiProperty({
+    example: 'Pollo con papas',
+    required: false,
+  })
   title: string
 
-  description: string;
+  @ApiProperty({
+    example: 'Pollo con papas y arroz',
+    required: false,
+  })
+  description: string
 
-  ingredients: IngredientComplete[];
+  @ApiProperty({
+    example: [],
+    required: false,
+  })
+  ingredients: IngredientComplete[]
 }
