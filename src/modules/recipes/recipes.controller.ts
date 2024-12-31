@@ -32,6 +32,11 @@ export class RecipesController {
     return await this.recipesService.findAll(page, limit)
   }
 
+  @Get('/select')
+  async findForSelect() {
+    return await this.recipesService.findForSelect()
+  }
+
   @Post('/search')
   async findByFilter(@Body() filter: FilterRecipeDto): Promise<Recipe[]> {
     return await this.recipesService.findByFilter(filter)

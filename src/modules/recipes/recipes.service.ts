@@ -34,6 +34,10 @@ export class RecipesService {
     return await this.recipeRepository.findAll(page, limit)
   }
 
+  async findForSelect() {
+    return await this.recipeRepository.findForSelect()
+  }
+
   async findByFilter(filter: FilterRecipeDto) {
     return await this.recipeRepository.findByFilter(filter)
   }

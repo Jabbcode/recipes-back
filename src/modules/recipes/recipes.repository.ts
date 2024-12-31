@@ -34,6 +34,11 @@ export class RecipeRepository {
     return { recipes, pages, total: count }
   }
 
+  async findForSelect() {
+    const recipes = await this.recipeModel.find().select('id, title').exec()
+    return recipes
+  }
+
   async findByFilter(filter: FilterRecipeDto): Promise<Recipe[]> {
     const query = this.recipeModel.find()
 
