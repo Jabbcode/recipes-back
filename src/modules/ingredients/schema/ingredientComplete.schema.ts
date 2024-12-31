@@ -1,6 +1,6 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose'
 import mongoose, { HydratedDocument } from 'mongoose'
-import { Unit } from 'src/modules/units/schemas/unit.schema'
+import { Unit } from '@/modules/units/schemas/unit.schema'
 import { Ingredient } from './ingredient.schema'
 
 export type IngredientCompleteDocument = HydratedDocument<IngredientComplete>
@@ -25,5 +25,4 @@ export class IngredientComplete {
   unit: Unit
 }
 
-export const IngredientCompleteSchema =
-  SchemaFactory.createForClass(IngredientComplete)
+export const IngredientCompleteSchema = SchemaFactory.createForClass(IngredientComplete)

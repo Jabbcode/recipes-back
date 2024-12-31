@@ -1,8 +1,8 @@
 import { Injectable } from '@nestjs/common'
-import { Model } from 'mongoose'
 import { InjectModel } from '@nestjs/mongoose'
-import { Ingredient } from './schema/ingredient.schema'
-import { FilterIngredientDto } from './dto/filter-ingredient.dto'
+import { Model } from 'mongoose'
+import { Ingredient } from './schema'
+import { FilterIngredientDto } from './dto'
 
 @Injectable()
 export class IngredientRepository {
@@ -56,9 +56,7 @@ export class IngredientRepository {
   }
 
   async update(id: string, ingredient: Ingredient): Promise<Ingredient> {
-    return this.ingredientModel
-      .findByIdAndUpdate(id, ingredient, { new: true })
-      .exec()
+    return this.ingredientModel.findByIdAndUpdate(id, ingredient, { new: true }).exec()
   }
 
   async delete(id: string): Promise<Ingredient> {

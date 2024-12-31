@@ -1,25 +1,19 @@
 import { Injectable, HttpException } from '@nestjs/common'
-import { CreateIngredientDto } from './dto/create-ingredient.dto'
-import { UpdateIngredientDto } from './dto/update-ingredient.dto'
-import { Ingredient } from './schema/ingredient.schema'
 import { IngredientRepository } from './ingredients.repository'
-import { FilterIngredientDto } from './dto/filter-ingredient.dto'
+import { CreateIngredientDto, UpdateIngredientDto, FilterIngredientDto } from './dto'
+import { Ingredient } from './schema'
 
 @Injectable()
 export class IngredientsService {
   constructor(private readonly ingredientRepository: IngredientRepository) {}
 
-  async create(
-    createIngredientDto: CreateIngredientDto,
-  ): Promise<{
+  async create(createIngredientDto: CreateIngredientDto): Promise<{
     ingredient?: Ingredient
     message: string
     statusCode?: number
   }> {
     try {
-      const existIngredient = await this.ingredientRepository.findByName(
-        createIngredientDto.name,
-      )
+      const existIngredient = await this.ingredientRepository.findByName(createIngredientDto.name)
 
       if (existIngredient) {
         return {
@@ -65,10 +59,10 @@ export class IngredientsService {
       if (!ingredient) {
         throw new HttpException(
           {
-            statusCode: 400,
+            statusCode: 404,
             message: `No existe ingrediente con el id ${id}`,
           },
-          400,
+          404,
         )
       }
 
@@ -98,17 +92,14 @@ export class IngredientsService {
       if (!ingredient) {
         throw new HttpException(
           {
-            statusCode: 400,
+            statusCode: 404,
             message: `No existe ingrediente con el id ${id}`,
           },
-          400,
+          404,
         )
       }
       return {
-        ingredient: await this.ingredientRepository.update(
-          id,
-          updateIngredientDto,
-        ),
+        ingredient: await this.ingredientRepository.update(id, updateIngredientDto),
         message: 'Ingrediente actualizado correctamente',
       }
     } catch (error) {
@@ -126,19 +117,17 @@ export class IngredientsService {
     }
   }
 
-  async remove(
-    id: string,
-  ): Promise<{ ingredient: Ingredient; message: string }> {
+  async remove(id: string): Promise<{ ingredient: Ingredient; message: string }> {
     try {
       const ingredient = await this.ingredientRepository.findOne(id)
 
       if (!ingredient) {
         throw new HttpException(
           {
-            statusCode: 400,
+            statusCode: 404,
             message: `No existe ingrediente con el id ${id}`,
           },
-          400,
+          404,
         )
       }
 
