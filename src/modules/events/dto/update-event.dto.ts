@@ -8,18 +8,20 @@ export class UpdateEventDto extends PartialType(CreateEventDto) {
   @ApiProperty({
     description: 'Date of the event',
     example: '2021-10-10T00:00:00.000Z',
+    required: false,
   })
   date: Date
 
   @ApiProperty({
     description: 'Recipe of the event',
-    required: true,
+    required: false,
   })
   recipe: Recipe
 
   @ApiProperty({
     description: 'Type of food',
     example: 'breakfast',
+    required: false,
   })
   type: typeof FoodTypes
 }

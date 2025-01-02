@@ -6,6 +6,7 @@ export class FilterEventDto {
   @ApiProperty({
     description: 'Date of the event',
     example: '2021-10-10T00:00:00.000Z',
+    required: false,
   })
   @IsOptional()
   date: Date
@@ -13,6 +14,7 @@ export class FilterEventDto {
   @ApiProperty({
     description: 'Type of food',
     example: 'breakfast',
+    required: false,
   })
   @IsOptional()
   @IsEnum(FoodTypes)
@@ -21,6 +23,7 @@ export class FilterEventDto {
   @ApiProperty({
     description: 'Start date of the event',
     example: '2021-10-10T00:00:00.000Z',
+    required: false,
   })
   @IsOptional()
   startDate: Date
@@ -28,6 +31,7 @@ export class FilterEventDto {
   @ApiProperty({
     description: 'End date of the event',
     example: '2021-10-10T00:00:00.000Z',
+    required: false,
   })
   @IsOptional()
   endDate: Date
