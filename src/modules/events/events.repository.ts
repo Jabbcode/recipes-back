@@ -1,14 +1,13 @@
 import { Injectable } from '@nestjs/common'
-import { Model } from 'mongoose'
 import { InjectModel } from '@nestjs/mongoose'
-import { Event } from './schemas/event.schema'
-import { FilterEventDto } from './dto/filter-event.dto'
+import { Model } from 'mongoose'
+
+import { FilterEventDto } from './dto'
+import { Event } from './schemas'
 
 @Injectable()
 export class EventRepository {
-  constructor(
-    @InjectModel(Event.name) private readonly eventModel: Model<Event>,
-  ) {}
+  constructor(@InjectModel(Event.name) private readonly eventModel: Model<Event>) {}
 
   async findAll(): Promise<Event[]> {
     return await this.eventModel
@@ -41,9 +40,7 @@ export class EventRepository {
       query.where('date', { $gte: filter.startDate, $lte: filter.endDate })
     }
 
-    return query
-      .populate([{ path: 'date' }, { path: 'type' }, { path: 'recipe' }])
-      .exec()
+    return query.populate([{ path: 'date' }, { path: 'type' }, { path: 'recipe' }]).exec()
   }
 
   async findOne(id: string): Promise<Event> {

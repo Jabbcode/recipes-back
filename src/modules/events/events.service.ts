@@ -1,8 +1,8 @@
 import { HttpException, Injectable } from '@nestjs/common'
-import { CreateEventDto } from './dto/create-event.dto'
-import { UpdateEventDto } from './dto/update-event.dto'
+
 import { EventRepository } from './events.repository'
-import { FilterEventDto } from './dto/filter-event.dto'
+
+import { CreateEventDto, FilterEventDto, UpdateEventDto } from './dto'
 
 @Injectable()
 export class EventsService {
