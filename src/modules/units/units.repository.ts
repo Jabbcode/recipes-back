@@ -1,14 +1,13 @@
 import { Injectable } from '@nestjs/common'
-import { Model } from 'mongoose'
 import { InjectModel } from '@nestjs/mongoose'
-import { Unit } from './schemas/unit.schema'
-import { FilterUnitDto } from './dto/filter-unit.dto'
+import { Model } from 'mongoose'
+
+import { Unit } from './schemas'
+import { FilterUnitDto } from './dto'
 
 @Injectable()
 export class UnitRepository {
-  constructor(
-    @InjectModel(Unit.name) private readonly unitModel: Model<Unit>,
-  ) {}
+  constructor(@InjectModel(Unit.name) private readonly unitModel: Model<Unit>) {}
 
   async findAll(
     page: number = 1,

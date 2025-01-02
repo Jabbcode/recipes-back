@@ -1,17 +1,15 @@
 import { HttpException, Injectable } from '@nestjs/common'
-import { CreateUnitDto } from './dto/create-unit.dto'
-import { UpdateUnitDto } from './dto/update-unit.dto'
+
 import { UnitRepository } from './units.repository'
-import { Unit } from './schemas/unit.schema'
-import { FilterUnitDto } from './dto/filter-unit.dto'
+
+import { CreateUnitDto, FilterUnitDto, UpdateUnitDto } from './dto'
+import { Unit } from './schemas'
 
 @Injectable()
 export class UnitsService {
   constructor(private readonly unitRepository: UnitRepository) {}
 
-  async create(
-    createUnitDto: CreateUnitDto,
-  ): Promise<{ unit: Unit; message: string }> {
+  async create(createUnitDto: CreateUnitDto): Promise<{ unit: Unit; message: string }> {
     try {
       const existUnit = await this.unitRepository.findByName(createUnitDto.name)
 
@@ -85,10 +83,7 @@ export class UnitsService {
     }
   }
 
-  async update(
-    id: string,
-    updateUnitDto: UpdateUnitDto,
-  ): Promise<{ unit: Unit; message: string }> {
+  async update(id: string, updateUnitDto: UpdateUnitDto): Promise<{ unit: Unit; message: string }> {
     try {
       const unit = await this.unitRepository.findOne(id)
 
