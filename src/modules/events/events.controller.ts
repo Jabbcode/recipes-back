@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, HttpCode } from '@nestjs/common'
+import { Controller, Get, Post, Body, Patch, Param, Delete, HttpCode, Query } from '@nestjs/common'
 import { ApiOperation, ApiTags } from '@nestjs/swagger'
 
 import { CreateEventDto, FilterEventDto, UpdateEventDto } from './dto'
@@ -9,6 +9,11 @@ import { EventsService } from './events.service'
 import { MongoValidIdPipe } from '@/pipes'
 import { ApiResponses } from '@/decorators'
 
+interface EventsResponse {
+  events: Event[]
+  pages: number
+  total: number
+}
 @ApiTags('Events')
 @Controller('events')
 export class EventsController {
@@ -31,8 +36,11 @@ export class EventsController {
     { status: 200, description: 'Success' },
     { status: 500, description: 'Internal server error' },
   ])
-  async findAll(): Promise<Event[]> {
-    return await this.eventsService.findAll()
+  async findAll(
+    @Query('page') page: number,
+    @Query('limit') limit: number,
+  ): Promise<EventsResponse> {
+    return await this.eventsService.findAll(page, limit)
   }
 
   @Post('/search')

@@ -1,26 +1,29 @@
 import { PartialType } from '@nestjs/mapped-types'
-import { CreateEventDto } from './create-event.dto'
-import { Recipe } from 'src/modules/recipes/schema/recipe.schema'
-import { FoodTypes } from 'src/types'
 import { ApiProperty } from '@nestjs/swagger'
+
+import { CreateEventDto } from './create-event.dto'
+
+import { Recipe } from '@/modules/recipes/schema'
+import { FoodTypes } from '@/types'
 
 export class UpdateEventDto extends PartialType(CreateEventDto) {
   @ApiProperty({
-    description: 'Date of the event',
+    description: 'Fecha del evento',
     example: '2021-10-10T00:00:00.000Z',
     required: false,
   })
   date: Date
 
   @ApiProperty({
-    description: 'Recipe of the event',
+    description: 'Id de Receta del evento',
+    example: '677680fa6fa5fa77e5fd4a5a',
     required: false,
   })
   recipe: Recipe
 
   @ApiProperty({
-    description: 'Type of food',
-    example: 'breakfast',
+    description: 'Tipo de comida',
+    example: 'Desayuno | Almuerzo | Cena',
     required: false,
   })
   type: typeof FoodTypes

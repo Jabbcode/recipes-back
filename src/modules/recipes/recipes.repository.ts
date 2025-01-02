@@ -78,7 +78,14 @@ export class RecipeRepository {
   }
 
   async create(recipe: Recipe): Promise<Recipe> {
-    return this.recipeModel.create(recipe)
+    const newRecipe = await this.recipeModel.create(recipe)
+    return newRecipe.populate({
+      path: 'ingredients',
+      populate: [
+        { path: 'name', select: 'name' },
+        { path: 'unit', select: ['name', 'description'] },
+      ],
+    })
   }
 
   async update(id: string, recipe: Recipe): Promise<Recipe> {

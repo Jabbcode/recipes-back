@@ -1,7 +1,7 @@
 import { PartialType } from '@nestjs/mapped-types'
 import { ApiProperty } from '@nestjs/swagger'
 
-import { IngredientComplete } from '@/modules/ingredients/schema/ingredientComplete.schema'
+import { IngredientComplete } from '@/modules/ingredients/schema'
 import { CreateRecipeDto } from './create-recipe.dto'
 
 export class UpdateRecipeDto extends PartialType(CreateRecipeDto) {
@@ -18,7 +18,13 @@ export class UpdateRecipeDto extends PartialType(CreateRecipeDto) {
   description: string
 
   @ApiProperty({
-    example: [],
+    example: [
+      {
+        name: '67059a7031752bddd6c0fde4',
+        quantity: 1,
+        unit: '66e5e9ffe9157993265d32dd',
+      },
+    ],
     required: false,
   })
   ingredients: IngredientComplete[]

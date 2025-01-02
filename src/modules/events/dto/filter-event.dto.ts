@@ -1,10 +1,11 @@
 import { ApiProperty } from '@nestjs/swagger'
 import { IsEnum, IsOptional } from 'class-validator'
-import { FoodTypes } from 'src/types'
+
+import { FoodTypes } from '@/types'
 
 export class FilterEventDto {
   @ApiProperty({
-    description: 'Date of the event',
+    description: 'Fecha del evento',
     example: '2021-10-10T00:00:00.000Z',
     required: false,
   })
@@ -12,8 +13,8 @@ export class FilterEventDto {
   date: Date
 
   @ApiProperty({
-    description: 'Type of food',
-    example: 'breakfast',
+    description: 'Tipo de comida',
+    example: 'Desayuno | Almuerzo | Cena',
     required: false,
   })
   @IsOptional()
@@ -21,7 +22,7 @@ export class FilterEventDto {
   type: typeof FoodTypes
 
   @ApiProperty({
-    description: 'Start date of the event',
+    description: 'Fecha de inicio del evento',
     example: '2021-10-10T00:00:00.000Z',
     required: false,
   })
@@ -29,7 +30,7 @@ export class FilterEventDto {
   startDate: Date
 
   @ApiProperty({
-    description: 'End date of the event',
+    description: 'Fecha de fin del evento',
     example: '2021-10-10T00:00:00.000Z',
     required: false,
   })

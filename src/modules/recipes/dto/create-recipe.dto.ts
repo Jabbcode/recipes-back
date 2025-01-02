@@ -2,7 +2,7 @@ import { ApiProperty } from '@nestjs/swagger'
 import { ArrayNotEmpty, IsNotEmpty, IsString, MaxLength } from 'class-validator'
 import { Type } from 'class-transformer'
 
-import { IngredientComplete } from '@/modules/ingredients/schema/ingredientComplete.schema'
+import { IngredientComplete } from '@/modules/ingredients/schema'
 
 export class CreateRecipeDto {
   @ApiProperty({
@@ -25,7 +25,13 @@ export class CreateRecipeDto {
   description: string
 
   @ApiProperty({
-    example: [],
+    example: [
+      {
+        name: '67059a7031752bddd6c0fde4',
+        quantity: 1,
+        unit: '66e5e9ffe9157993265d32dd',
+      },
+    ],
     required: true,
   })
   @ArrayNotEmpty()

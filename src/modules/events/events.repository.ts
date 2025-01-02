@@ -9,11 +9,35 @@ import { Event } from './schemas'
 export class EventRepository {
   constructor(@InjectModel(Event.name) private readonly eventModel: Model<Event>) {}
 
-  async findAll(): Promise<Event[]> {
-    return await this.eventModel
+  async findAll(
+    page: number = 1,
+    limit: number = 10,
+  ): Promise<{ events: Event[]; pages: number; total: number }> {
+    const skip = (page - 1) * limit
+    const events = await this.eventModel
       .find()
-      .populate([{ path: 'date' }, { path: 'type' }, { path: 'recipe' }])
+      .skip(skip)
+      .limit(limit)
+      .populate([
+        { path: 'date' },
+        { path: 'type' },
+        {
+          path: 'recipe',
+          populate: {
+            path: 'ingredients',
+            populate: [
+              { path: 'name', select: 'name' },
+              { path: 'unit', select: ['name', 'description'] },
+            ],
+          },
+        },
+      ])
       .exec()
+
+    const count = await this.eventModel.countDocuments().exec()
+    const pages = Math.ceil(count / limit)
+
+    return { events, pages, total: count }
   }
 
   async findByName(name: string): Promise<Event | null> {
@@ -48,7 +72,22 @@ export class EventRepository {
   }
 
   async create(event: Event): Promise<Event> {
-    return this.eventModel.create(event)
+    const newEvent = await this.eventModel.create(event)
+
+    return newEvent.populate([
+      { path: 'date' },
+      { path: 'type' },
+      {
+        path: 'recipe',
+        populate: {
+          path: 'ingredients',
+          populate: [
+            { path: 'name', select: 'name' },
+            { path: 'unit', select: ['name', 'description'] },
+          ],
+        },
+      },
+    ])
   }
 
   async update(id: string, event: Event): Promise<Event> {

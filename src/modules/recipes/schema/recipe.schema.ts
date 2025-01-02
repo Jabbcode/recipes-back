@@ -1,7 +1,7 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose'
 import { HydratedDocument } from 'mongoose'
 
-import { IngredientComplete } from '@/modules/ingredients/schema/ingredientComplete.schema'
+import { IngredientComplete } from '@/modules/ingredients/schema'
 
 export type RecipeDocument = HydratedDocument<Recipe>
 
@@ -21,7 +21,7 @@ export class Recipe {
   @Prop({ required: true, type: String })
   description: string
 
-  @Prop()
+  @Prop({ type: [{ type: IngredientComplete }] })
   ingredients: IngredientComplete[]
 }
 

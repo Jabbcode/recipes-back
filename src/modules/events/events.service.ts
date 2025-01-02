@@ -3,6 +3,7 @@ import { HttpException, Injectable } from '@nestjs/common'
 import { EventRepository } from './events.repository'
 
 import { CreateEventDto, FilterEventDto, UpdateEventDto } from './dto'
+import { Event } from './schemas'
 
 @Injectable()
 export class EventsService {
@@ -26,8 +27,11 @@ export class EventsService {
     }
   }
 
-  async findAll() {
-    return await this.eventRepository.findAll()
+  async findAll(
+    page: number,
+    limit: number,
+  ): Promise<{ events: Event[]; pages: number; total: number }> {
+    return await this.eventRepository.findAll(page, limit)
   }
 
   async findByFilter(filter: FilterEventDto) {
