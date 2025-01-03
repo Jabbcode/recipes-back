@@ -1,10 +1,12 @@
 import { Module } from '@nestjs/common'
-import { IngredientsModule } from './modules/ingredients/ingredients.module'
 import { MongooseModule } from '@nestjs/mongoose'
-import { UnitsModule } from './modules/units/units.module'
-import { RecipesModule } from './modules/recipes/recipes.module'
-import { EventsModule } from './modules/events/events.module'
 import { ConfigModule } from '@nestjs/config'
+
+import { IngredientsModule } from '@/modules/ingredients/ingredients.module'
+import { UnitsModule } from '@/modules/units/units.module'
+import { RecipesModule } from '@/modules/recipes/recipes.module'
+import { EventsModule } from '@/modules/events/events.module'
+import { FoodTypesModule } from '@/modules/food-types/food-types.module'
 
 @Module({
   imports: [
@@ -14,6 +16,7 @@ import { ConfigModule } from '@nestjs/config'
     UnitsModule,
     RecipesModule,
     EventsModule,
+    FoodTypesModule,
   ],
 })
 export class AppModule {}

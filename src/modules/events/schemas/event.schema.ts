@@ -2,8 +2,7 @@ import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose'
 import mongoose, { HydratedDocument } from 'mongoose'
 
 import { Recipe } from '@/modules/recipes/schema'
-
-import { FoodTypes } from '@/types'
+import { FoodType } from '@/modules/food-types/schema'
 
 export type EventDocument = HydratedDocument<Event>
 
@@ -20,8 +19,8 @@ export class Event {
   @Prop({ required: true })
   date: Date
 
-  @Prop({ required: true })
-  type: typeof FoodTypes
+  @Prop({ required: true, type: mongoose.Schema.Types.ObjectId, ref: 'FoodType' })
+  foodType: FoodType
 
   @Prop({ type: mongoose.Schema.Types.ObjectId, ref: 'Recipe' })
   recipe: Recipe

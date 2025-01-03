@@ -19,7 +19,7 @@ export class FilterEventDto {
   })
   @IsOptional()
   @IsEnum(FoodTypes)
-  type: typeof FoodTypes
+  foodType: FoodTypes
 
   @ApiProperty({
     description: 'Fecha de inicio del evento',

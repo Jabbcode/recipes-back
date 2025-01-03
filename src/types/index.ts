@@ -1,5 +1,5 @@
-export const FoodTypes = {
-  Desayuno: 'Desayuno',
-  Almuerzo: 'Almuerzo',
-  Cena: 'Cena',
+export enum FoodTypes {
+  DESAYUNO = 'desayuno',
+  ALMUERZO = 'almuerzo',
+  CENA = 'cena',
 }

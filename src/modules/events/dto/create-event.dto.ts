@@ -2,8 +2,7 @@ import { ApiProperty } from '@nestjs/swagger'
 import { IsNotEmpty, IsString } from 'class-validator'
 
 import { Recipe } from '@/modules/recipes/schema'
-
-import { FoodTypes } from '@/types'
+import { FoodType } from '@/modules/food-types/schema'
 
 export class CreateEventDto {
   @ApiProperty({
@@ -16,11 +15,11 @@ export class CreateEventDto {
 
   @ApiProperty({
     description: 'Tipo de comida',
-    example: 'Desayuno | Almuerzo | Cenaayuno',
+    example: '677680fa6fa5fa77e5fd4a5a',
     required: true,
   })
   @IsString()
-  type: typeof FoodTypes
+  foodType: FoodType
 
   @ApiProperty({
     description: 'Id de Receta del evento',

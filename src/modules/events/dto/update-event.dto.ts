@@ -4,7 +4,7 @@ import { ApiProperty } from '@nestjs/swagger'
 import { CreateEventDto } from './create-event.dto'
 
 import { Recipe } from '@/modules/recipes/schema'
-import { FoodTypes } from '@/types'
+import { FoodType } from '@/modules/food-types/schema'
 
 export class UpdateEventDto extends PartialType(CreateEventDto) {
   @ApiProperty({
@@ -26,5 +26,5 @@ export class UpdateEventDto extends PartialType(CreateEventDto) {
     example: 'Desayuno | Almuerzo | Cena',
     required: false,
   })
-  type: typeof FoodTypes
+  foodType: FoodType
 }

@@ -20,7 +20,7 @@ export class EventRepository {
       .limit(limit)
       .populate([
         { path: 'date' },
-        { path: 'type' },
+        { path: 'foodType' },
         {
           path: 'recipe',
           populate: {
@@ -56,8 +56,8 @@ export class EventRepository {
       })
     }
 
-    if (filter.type) {
-      query.where('type', filter.type)
+    if (filter.foodType) {
+      query.where('type', filter.foodType)
     }
 
     if (filter.startDate && filter.endDate) {
@@ -76,7 +76,7 @@ export class EventRepository {
 
     return newEvent.populate([
       { path: 'date' },
-      { path: 'type' },
+      { path: 'foodType' },
       {
         path: 'recipe',
         populate: {
