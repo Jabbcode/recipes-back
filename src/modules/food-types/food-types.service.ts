@@ -68,6 +68,28 @@ export class FoodTypesService {
     }
   }
 
+  async generateFoodTypes() {
+    try {
+      await this.foodTypeRepository.generateFoodTypes()
+      return {
+        statusCode: 201,
+        message: 'Tipos de comida generados correctamente',
+      }
+    } catch (error) {
+      if (error instanceof HttpException) {
+        throw error
+      } else {
+        throw new HttpException(
+          {
+            statusCode: 500,
+            message: 'Internal server error',
+          },
+          500,
+        )
+      }
+    }
+  }
+
   async remove(id: string) {
     try {
       const foodType = await this.foodTypeRepository.findOne(id)

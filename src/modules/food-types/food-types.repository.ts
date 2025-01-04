@@ -4,6 +4,7 @@ import { Model } from 'mongoose'
 
 import { FoodType } from './schema'
 import { FoodTypes } from '@/types'
+import { foodTypes } from '@/constants'
 
 @Injectable()
 export class FoodTypeRepository {
@@ -36,6 +37,11 @@ export class FoodTypeRepository {
 
   async update(id: string, foodType: FoodType): Promise<FoodType> {
     return this.foodTypeModel.findByIdAndUpdate(id, foodType, { new: true }).exec()
+  }
+
+  async generateFoodTypes() {
+    await this.foodTypeModel.deleteMany({})
+    await this.foodTypeModel.insertMany(foodTypes)
   }
 
   async deleteEvent(id: string) {

@@ -70,6 +70,16 @@ export class FoodTypesController {
     return this.foodTypesService.update(id, updateFoodTypeDto)
   }
 
+  @Post('generate-food-types')
+  @ApiOperation({ summary: 'Generate food types' })
+  @ApiResponses([
+    { status: 200, description: 'Success' },
+    { status: 500, description: 'Internal server error' },
+  ])
+  generateFoodTypes() {
+    return this.foodTypesService.generateFoodTypes()
+  }
+
   @Delete(':id')
   @ApiOperation({ summary: 'Delete a food type' })
   @ApiResponses([
