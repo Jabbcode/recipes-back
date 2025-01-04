@@ -4,7 +4,7 @@ import { Model } from 'mongoose'
 
 import { FoodType } from './schema'
 import { FoodTypes } from '@/types'
-import { foodTypes } from '@/constants'
+import { foodTypes } from '@/constants/food-types'
 
 @Injectable()
 export class FoodTypeRepository {
